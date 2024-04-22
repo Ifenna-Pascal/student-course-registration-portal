@@ -50,7 +50,7 @@ const Profile = () => {
         e.preventDefault();
         setLoading(true)
         await axiosInstance.put('/student/update-profile', form)
-        .then((res) => {
+        .then(() => {
             setShow(false)
             setLoading(false);
             getProfile()

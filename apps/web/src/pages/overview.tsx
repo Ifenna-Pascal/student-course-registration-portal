@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { axiosInstance } from '../lib/axios-instance';
 import { toast } from 'react-toastify';
 import Book from '../components/Book';
-import useDebounce from '../lib/useDebounce';
-
 interface ICourse {
   imgUrl : string;
   name: string;
@@ -16,8 +14,6 @@ interface ICourse {
 const DashboardOverview = () => {
   const [courses, setCourses] = useState<ICourse[]>([]);
   const [search, setSearch] = useState('')
-  const debouncedValue = useDebounce(search, 500)
-
 
   const getAllCourse = async (search?: string) => {
       console.log(search, "ss")

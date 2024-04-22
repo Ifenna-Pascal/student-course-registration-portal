@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { axiosInstance } from '../lib/axios-instance';
 import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -29,7 +29,7 @@ const Courses = () => {
 
     const enrollCourse = async () => {
         setLoading(true);
-        await axiosInstance.post(`/student/enroll-course/${id}`).then((res) => {
+        await axiosInstance.post(`/student/enroll-course/${id}`).then(() => {
             toast.success('Course enrolled successfully')
             navigate('/dashboard/enrolled-courses')
             setLoading(false);

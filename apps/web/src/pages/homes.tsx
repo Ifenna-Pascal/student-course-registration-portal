@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { axiosInstance } from '../lib/axios-instance';
 import { IoMdCopy } from "react-icons/io";
 import {CopyToClipboard} from 'react-copy-to-clipboard';

@@ -1,20 +1,27 @@
-# Use an official Node.js image as the base image
-FROM node:14
+# Base image
+FROM node:lts-alpine
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json (if available)
+# Copy package.json and package-lock.json
 COPY package*.json ./
 
 # Install dependencies
 RUN npm install
 
-# Copy the remaining files to the container
+# Copy the entire project
 COPY . .
 
-# Build the application
+# Build the app
 RUN npm run build
 
-# Set the command to run the application
-CMD ["npm", "run", "dev"]
+# Set the host environment variable
+ENV HOST=0.0.0.0
+
+# Copy the entrypoint script
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+# Start the app using the entrypoint script
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
