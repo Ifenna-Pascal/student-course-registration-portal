@@ -38,7 +38,7 @@ async function bootstrap() {
   setupSwagger(app);
 
 
-  await app.listen(3000);
+  await app.listen(8080);
   console.log(configService.get<string>('jwt.secret'));
   
   console.log(

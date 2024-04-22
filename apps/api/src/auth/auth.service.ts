@@ -66,7 +66,7 @@ export class AuthService {
           // create a library account
           const library = await axios.post('http://localhost:80/api/register', {
             studentId: newUser.id
-          })
+          });
           // create a finance account
           const account = await axios.post('http://localhost:8081/accounts/', {
             studentId: newUser.id
