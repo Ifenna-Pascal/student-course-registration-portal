@@ -10,9 +10,13 @@ describe('StudentController', () => {
     let courseService: CoursesService;
     let studentControlller: StudentsController 
     beforeEach(async () => {
+        // Stand-ins for the services so the test needs no database
         const module: TestingModule = await Test.createTestingModule({
-            controllers:[studentControlller as any],
-            providers: [StudentsService, CoursesService],
+            controllers: [StudentsController],
+            providers: [
+                { provide: StudentsService, useValue: { findOne: jest.fn() } },
+                { provide: CoursesService, useValue: { findOneCourse: jest.fn(), hasEnrolled: jest.fn(), createCourseEnrollment: jest.fn() } },
+            ],
         }).compile();
 
         studentControlller = module.get<StudentsController>(StudentsController);
@@ -33,10 +37,14 @@ describe('StudentController', () => {
         jest.spyOn(courseService, 'findOneCourse').mockResolvedValue(course as any);
         jest.spyOn(courseService, 'hasEnrolled').mockResolvedValue(null);
         jest.spyOn(axios, 'post').mockResolvedValue({ data: { reference } });
+        const enrollment = { course: course._id, student: student._id, reference };
+        jest.spyOn(courseService, 'createCourseEnrollment').mockResolvedValue(enrollment as any);
     
         const result = await studentControlller.enrollCourse(req, idDto);
     
-        expect(result).toEqual({ data: reference });
+        // The invoice reference is saved with the enrollment
+        expect(courseService.createCourseEnrollment).toHaveBeenCalledWith(idDto.id, 'user_id', reference);
+        expect(result).toEqual({ data: enrollment });
       });
     
   it('should throw NotFoundException if course is not found', async () => {
